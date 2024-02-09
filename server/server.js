@@ -1,33 +1,19 @@
-import { ApolloServer } from '@apollo/server';
-import { expressMiddleware as apolloMiddleware } from '@apollo/server/express4';
-import cors from 'cors';
-import express from 'express';
-import { readFile } from 'node:fs/promises';
-import { authMiddleware, handleLogin } from './auth.js';
-import { resolvers } from './resolvers.js';
+import dotenv from 'dotenv';
+import { connectDB } from "./config/database.js";
+import httpServer from './app.js';
 
-const PORT = 9000;
+dotenv.config({
+    path: './.env'
+});
 
-const app = express();
-app.use(cors(), express.json());
+// Initialize Database.
+connectDB().then(() => {
 
-app.post('/login', handleLogin);
+});
 
-function getContext({ req }) {
-  if (req.auth) {
-    return { user: req.auth.sub };
-  }
-  return {};
-}
-
-const typeDefs = await readFile('./schema.graphql', 'utf8');
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
-await apolloServer.start();
-app.use('/graphql', authMiddleware, apolloMiddleware(apolloServer, {
-  context: getContext,
-}));
-
-app.listen({ port: PORT }, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
+// Start the server
+const port = process.env.PORT;
+httpServer.listen(port, () => {
+  console.log(`App running on [ PORT ] : ${port}`);
+  console.log(`GraphQL endpoint: http://localhost:${port}/graphql`);
 });

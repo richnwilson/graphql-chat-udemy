@@ -1,13 +1,22 @@
+# GraphQL 'http' GET type
 type Query {
   messages: [Message!]
 }
 
+# GraphQL 'http' POST, DELETE, PUT type
 type Mutation {
   addMessage(text: String!): Message
 }
 
+#  GraphQL 'websocket' subscription - open connection from browser to server to allow realtime server data
+#  - requires ws, graphql-ws and @graphql-tools/schema
+type Subscription {
+  messageAdded: Message
+}
+
+# custom type
 type Message {
-  id: ID!
+  _id: ID
   user: String!
   text: String!
 }

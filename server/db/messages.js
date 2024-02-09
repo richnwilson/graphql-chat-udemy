@@ -1,19 +1,30 @@
-import { connection } from './connection.js';
-import { generateId } from './ids.js';
+import { Message } from '../models/message.js';
 
-const getMessageTable = () => connection.table('message');
-
-export async function getMessages() {
-  return await getMessageTable().select().orderBy('createdAt', 'asc');
+export async function getUser(username) {
+  return await Users.find({ username }).lean().exec();
 }
 
-export async function createMessage(user, text) {
-  const message = {
-    id: generateId(),
-    user,
-    text,
-    createdAt: new Date().toISOString(),
-  };
-  await getMessageTable().insert(message);
-  return message;
+
+export const getMessages = async () => {
+  try {
+    const data =  await Message.find().sort({'createdAt': 1}).lean().exec();
+    return data;
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+
+export const createMessage = async (user,text) => {
+  try {
+    const message = {
+      user: user[0].username,
+      text
+    };
+    let createdMessage = await Message.create(message);
+    // See message.js in /models for how we customized 'toJSON' to clean up returned data
+    return createdMessage.toJSON();
+  } catch(e) {
+    console.log(e)
+  }
 }

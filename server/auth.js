@@ -12,7 +12,7 @@ export const authMiddleware = expressjwt({
 
 export async function handleLogin(req, res) {
   const { username, password } = req.body;
-  const user = await getUser(username);
+  const [ user ] = await getUser(username);
   if (!user || user.password !== password) {
     res.sendStatus(401);
   } else {

@@ -4,21 +4,29 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "local": "nodemon --inspect server.js"
   },
   "dependencies": {
-    "@apollo/server": "^4.9.4",
-    "better-sqlite3": "^9.0.0",
+    "@apollo/server": "^4.9.3",
+    "@graphql-tools/schema": "^10.0.0",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dataloader": "^2.2.2",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-jwt": "^8.4.1",
-    "graphql": "^16.8.1",
-    "jsonwebtoken": "^9.0.0",
-    "knex": "^3.0.1",
-    "nanoid": "^5.0.1"
+    "graphql": "^16.8.0",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.14.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "mongoose": "^7.5.0",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.3"
   },
   "nodemonConfig": {
     "ext": "graphql,js"

@@ -1,7 +1,5 @@
-import { connection } from './connection.js';
+import { User } from '../models/user.js';
 
-const getUserTable = () => connection.table('user');
-
-export async function getUser(username) {
-  return await getUserTable().first().where({ username });
+export const getUser = async (username) => {
+  return await User.find({ username }).lean().exec();
 }
