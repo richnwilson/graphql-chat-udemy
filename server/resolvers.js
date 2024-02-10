@@ -54,13 +54,16 @@ export const resolvers = {
   },
   Subscription: {  
     messageAdded: {
-      subscribe: () =>pubSub.asyncIterator(TRIGGER)
+      subscribe: (_root, _args, { user }) => {
+        if (!user) throw unauthorizedError();
+        return pubSub.asyncIterator(TRIGGER);
+      }
     }
   }
 }
 
 function unauthorizedError() {
   return new GraphQLError('Not authenticated', {
-    extensions: { code: 'UNAUTHORIZED' },
+    extensions: { code: 'UNAUTHORIZED' }
   });
 }

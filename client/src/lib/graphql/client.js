@@ -22,14 +22,15 @@ const authLink = new ApolloLink((operation, forward) => {
 // - http (triggered everytime API requested in client)
 //  - Bearer token included in each http request
 const httpLink = concat( authLink, createHttpLink({ 
-  uri: `http://localhost:${process.env.REACT_APP_PORT}/graphql` 
+  uri: `http://localhost:${process.env.REACT_APP_PORT}/graphql`
 }));
 
 // - WebSockets (one connection triggered on page load and sustained the whole session - single load)
 //  - Without authentication, someone could trigger the subscription on Apollo Server UI (/graphql) and then keep listening for all chat messages ( perhaps in a group that was private )
 //  - connectionParams is triggered once authenticated and then token sent via parameters to server
 const webSocketsLink = new GraphQLWebSocketsLink(createWebSocketsClient({
-  url: `ws://localhost:${process.env.REACT_APP_PORT}/graphql`
+  url: `ws://localhost:${process.env.REACT_APP_PORT}/graphql`,
+  connectionParams: () => ({ accessToken: getAccessToken() })
 }));
 
 // Used to determine call type - webSockets v http
